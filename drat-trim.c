@@ -1074,12 +1074,6 @@ void freeMemory (struct solver *S) {
   free (S->dependencies);
   return; }
 
-int onlyDelete (struct solver* S, int begin, int end) {
-  int step;
-  for (step = begin; step < end; step++)
-    if ((S->proof[step] & 1) == 0) return 0;
-  return 1; }
-
 void printHelp ( ) {
   printf ("usage: drat-trim [INPUT] [<PROOF>] [<option> ...]\n\n");
   printf ("where <option> is one of the following\n\n");
