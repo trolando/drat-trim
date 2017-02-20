@@ -80,14 +80,14 @@ static inline void addWatch (struct solver* S, int* clause, int index) {
   addWatchPtr (S, clause[index], ((long) (((clause) - S->DB)) << 1)); }
 
 static inline void removeWatch (struct solver* S, int* clause, int index) {
-  int lit = clause[index]; long *watch = S->wlist[lit];
-  int i;
-//  for (;;) {
-  for (i = 0; i < S->used[lit]; i++) {
-    int* _clause = S->DB + (*(watch++) >> 1);
-    if (_clause == clause) {
-      watch[-1] = S->wlist[lit][ --S->used[lit] ];
-      S->wlist[lit][ S->used[lit] ] = END; return; } } }
+  int lit = clause[index]; long *watch = S->wlist[lit]; long clidx = (clause-S->DB);
+  for (;;) {
+    long v=*watch;
+    if (v==END) { return; }
+    if ((v>>1)==clidx) {
+      *watch = S->wlist[lit][ --S->used[lit] ];
+      S->wlist[lit][ S->used[lit] ] = END; return; }
+    watch++; } }
 
 static inline void addUnit (struct solver* S, long index) {
   S->unitStack[S->unitSize++] = index; }
